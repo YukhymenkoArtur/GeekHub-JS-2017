@@ -1,12 +1,9 @@
 /* 1. Створити об'єкт.
 В цьому об'єкті написати власні реалізації наступних методів масиву: pop(), push(), slice(), join(), reverse()
 метод pop() */
-function frontend() {
-    var a = ["html", "css", "js", "1C"];
-    a.pop();
-    console.log(a);
-}
-frontend(); // (3) ["html", "css", "js"]
+var a = ["а","б","в","я"];
+c=a.pop(3); //a=[а,б,в]
+console.log(c); //"я"
 
 
 // метод push()
@@ -19,20 +16,19 @@ frontend();  // (4) ["html", "css", "js", "CMS"]
 
 
 // метод slice()
-function slice() {
-    var a = "Hello World";
-    var b = a.slice(0, -6);
-    console.log(b);
-}
-slice(); // Hello
+var a = [1,2,3,4,5,6,7,8,9];
+
+mas=a.slice(5);
+alert(mas); //[6,7,8,9]
+
+console.log(a).slice(5,2); //[]
 
 
 // метод join()
-function array() {
-    var a = ["java", "script"];
-    console.log(a.join("."));
-}
-array();  // java.script
+var mas = new Array("5", "пара", "9", 25, 9);
+
+s = mas.join(" - ");
+console.log(s);
 
 
 // метод reverse()
@@ -43,8 +39,6 @@ function reverse() {
 }
 reverse(); // (3) ["three", "two", "one"]
 
-
-/* 2. Оголосити масив для тестування методів ['a', 'b', 'c', 4, 5, 6] */
 
 
 
@@ -81,3 +75,16 @@ function summa() {
     console.log(s);
 }
 summa();
+
+// 5.4 
+function factorial(n) {
+		var result = n;
+		for (var i = 1; i < n; i++) {
+			result *= (n - i);
+		}
+		return result;
+	}
+
+console.log( factorial(5))
+
+
