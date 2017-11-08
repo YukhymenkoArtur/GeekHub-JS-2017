@@ -46,8 +46,34 @@ var doubleColaTests = [
 ];
 
 
+var doubleColaTests = [
+    {
+        parameters: [1],
+        expectedResult: "Sheldon"
+    },
+    {
+        parameters: [6],
+        expectedResult: "Sheldon"
+    },
+    {
+        parameters: [1802],
+        expectedResult: "Penny"
+    },
+    {
+        parameters: [12345],
+        expectedResult: "Leonard"
+    }
+];
+
+
 function doubleCola(n) {
-    //TODO
+    var cola = ["Sheldon", "Leonard", "Penny", "Rajesh", "Howard"];
+    for (var i = 1; i <= n; i++) {
+        var name = cola.shift();
+        cola.push(name);
+        cola.push(name);
+    }
+    return name;
 }
 
 

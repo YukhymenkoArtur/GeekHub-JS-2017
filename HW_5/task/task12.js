@@ -52,8 +52,36 @@ var fastMathTest = [
 ];
 
 
+var fastMathTest = [
+    {
+        parameters: ["1010100", "0100101"],
+        expectedResult: "1110001"
+    },
+    {
+        parameters: ["111", "000"],
+        expectedResult: "111"
+    },
+    {
+        parameters: ["1110", "1010"],
+        expectedResult: "0100"
+    },
+    {
+        parameters: ["01110", "01100"],
+        expectedResult: "00010"
+    }
+];
+
 function fastMath(a, b) {
-    //TODO
+    var result = "";
+    for (var i = 0; i < a.length; i++) {
+        if (a[i] != b[i]) {
+            result += "1";
+        }
+        else {
+            result += "0";
+        }
+    }
+    return result;
 }
 
 

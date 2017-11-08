@@ -33,8 +33,27 @@ var fibonacciTests = [
 
 
 function fibonacci(n) {
-    //TODO
+    var sum = 0;
+    for (var i = 1; i <= n; i++) {
+        sum += fib(i);
+    }
+    return sum;
 }
+
+function fib(m) {
+    if (m == 0 || m == 1) {
+        return m;
+    }
+    var a = 1;
+    var b = 1;
+    for (var i = 3; i <= m; i++) {
+        var x = a + b;
+        a = b;
+        b = x;
+    }
+    return b
+}
+
 
 
 tasks.push({
