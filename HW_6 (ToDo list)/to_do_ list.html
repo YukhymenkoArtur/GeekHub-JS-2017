@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<style> 
+ul {
+color: #F5F5F5;
+background-color: #497ac1;
+font-size: 30px;
+  }
+
+.brd {
+    border: 4px double black;
+    background-image: url(1.png); 
+    padding: 10px;
+	position: absolute;
+    top: 30%;
+    left: 50%;
+    margin: -125px 0 0 -125px;
+}  
+</style>
+<body>
+	<div class="brd">
+<div id="menu">
+Введите задание:
+    <label>
+      <textarea id="myInput"name="message" style="display:block;width:300px;height:80px"></textarea>
+    </label>
+
+    <input type="button" onclick="newElement()" value="Добавить">
+    <button onclick="sort()">Сортировать</button>
+    </div>
+
+<div>
+
+<div id="canvas"> </div>
+
+</div>
+
+<script type="text/javascript">
+
+function newElement() {
+  var add = document.createElement("add");
+  var inputValue = document.getElementById("myInput").value;
+  plan.push (inputValue);
+
+ render();
+
+
+   document.getElementById("myInput").value = "";
+}
+
+
+let plan = [];
+
+
+
+function render () {
+  const canvas = document.getElementById("canvas");canvas.innerHTML = "";
+  // запись в "планируется" 
+  let a = document.createElement('ul');
+  for(let i in plan){
+    
+    let li = document.createElement('li');
+    li.innerHTML = plan[i] + '<button onclick="removePlan('+ i +')">X</button>';
+    a.append(li);
+  }
+
+    canvas.append(a);
+    // запись в "планируется"
+}
+
+render();
+
+ function sort(){
+    plan.sort();
+    render()
+  }
+
+
+// удаляем с масива планировка
+function removePlan(i) {
+	plan.splice(i, 1);
+	render ();
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>
+
+
+
+
