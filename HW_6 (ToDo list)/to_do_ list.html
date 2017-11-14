@@ -5,6 +5,7 @@
 </head>
 
 <style> 
+
 ul {
 color: #F5F5F5;
 background-color: #497ac1;
@@ -17,20 +18,23 @@ font-size: 30px;
     padding: 10px;
 	position: absolute;
     top: 30%;
-    left: 50%;
+    left: 45%;
     margin: -125px 0 0 -125px;
-}  
+} 
+
 </style>
 <body>
 	<div class="brd">
 <div id="menu">
 Введите задание:
     <label>
-      <textarea id="myInput"name="message" style="display:block;width:300px;height:80px"></textarea>
+      <textarea id="myInput"name="message" style="display:block;width:313px;height:80px"></textarea>
     </label>
 
     <input type="button" onclick="newElement()" value="Добавить">
     <button onclick="sort()">Сортировать</button>
+    <button onclick="reverse()">Реверс</button>
+    <button onclick="reset()">Обновить</button>
     </div>
 
 <div>
@@ -48,12 +52,11 @@ function newElement() {
 
  render();
 
-
    document.getElementById("myInput").value = "";
 }
 
 
-let plan = [];
+let plan = []; // массив с заданиями
 
 
 
@@ -74,19 +77,27 @@ function render () {
 
 render();
 
- function sort(){
+ function sort() { // ф-ция сортировки тасков в массиве А-Я
     plan.sort();
     render()
   }
 
+function reverse() { // ф-ция сортировки Я-А
+    plan.reverse();
+    render()
+  }
 
-// удаляем с масива планировка
+
 function removePlan(i) {
 	plan.splice(i, 1);
 	render ();
 }
+// ф-ция для удаления записей с массива планировка
 
+function reset() { // ф-ция обновить страницу
+  location.reload();
 
+}
 
 </script>
 
