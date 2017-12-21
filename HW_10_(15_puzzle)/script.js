@@ -1,68 +1,162 @@
-var arr = [], box, ei,ej;						
-function swap(arr,i1,j1,i2,j2){				
-	t = arr[i1][j1];
-	arr[i1][j1] = arr[i2][j2];
-	arr[i2][j2] = t;
-}
-window.onload = function() {				
-	box = document.getElementById("box");
-	newGame();				
-	document.getElementById("reset").onclick = newGame;						
-}
-function cellClick(event) {
-	var event = event || window.event,
-		el = event.srcElement || event.target,
-		i = el.id.charAt(0),
-		j = el.id.charAt(2);
-	if((i == ei && Math.abs(j - ej) == 1) || (j == ej && Math.abs(i - ei) == 1)){					
-		document.getElementById(ei + " " + ej).innerHTML = el.innerHTML;
-		el.innerHTML = "";
-		ei = i;
-		ej = j;
-		var q = true;
-		for(i = 0; i < 4; ++i)
-			for(j = 0; j < 4; ++j)
-				if(i + j != 6 && document.getElementById(i + " " + j).innerHTML != i*4 + j + 1){
-					q = false;
-					break;
-				}
-				if(q) alert("Ви перемогли!");
-			}
-}
-function newGame(){			
-	for(i = 0; i < 4; ++i){
-		arr[i] = []
-		for(j = 0; j < 4; ++j){
-			if(i + j != 6)
-				arr[i][j] = i*4 + j + 1;
-			else
-				arr[i][j] = "";
-		}
-	}
-	ei = 3;
-	ej = 3;
-	for(i = 0; i < 1600; ++i)
-		switch(Math.round(3*Math.random())){
-			case 0: if(ei != 0) swap(arr,ei,ej,--ei,ej); break; // up
-			case 1: if(ej != 3) swap(arr,ei,ej,ei, ++ej); break; // right
-			case 2: if(ei != 3) swap(arr,ei,ej,++ei,ej); break; // down
-			case 3: if(ej != 0) swap(arr,ei,ej,ei,--ej); // left
-		}
-	var table = document.createElement("table"),
-		tbody = document.createElement("tbody");					
-	table.appendChild(tbody);
-	for(i = 0; i < 4; ++i){
-		var row = document.createElement("tr");
-		for(j = 0; j < 4; ++j){
-			var cell = document.createElement("td");
-				cell.id = i + " " + j;
-				cell.onclick = cellClick;
-				cell.innerHTML = arr[i][j];
-				row.appendChild(cell);
-		}
-		tbody.appendChild(row);					
-	}
-	if(box.childNodes.length == 1)
-		box.removeChild(box.firstChild);	
-	box.appendChild(table);	
-}
+(function(){
+    // detecting the winning
+    function isWin(){
+        if (!tds[numbersLength - 1].innerHTML) {
+            for (var i = 1; i < numbersLength; ++i) {
+                if (tds[i - 1].innerHTML != i) return false;
+            }
+        } else return false;
+        return true;
+    }
+    
+    // create rows & cells
+    function createFields() {
+        updateValues();
+        for (var i = 0; i < dimension; ++i) {
+            var tr = tbl.insertRow(-1);
+            for (var j = 0; j < dimension; ++j) {
+                tr.insertCell(j);
+            }
+        }
+    }
+    
+    // remove all rows from table
+    function removeFields() {
+        while (tbl.firstChild) {
+            tbl.removeChild(tbl.firstChild);
+        }
+    }
+    
+    function updateValues() {
+        dimension = +document.getElementById('dimension').value;
+        numbers = [];
+        for (var i = 1; i <= dimension * dimension; ++i) {
+            numbers.push(i);
+        }
+        numbersConst = numbers.slice(0);
+        numbersLength = numbers.length;
+    }
+    
+    // exchange of empty cell with clicked cell
+    function swap(a, b) {
+        var t = a.innerHTML;
+        a.innerHTML = b.innerHTML;
+        b.innerHTML = t;
+        b.style.backgroundColor = colorEmptyCell;
+        a.style.backgroundColor = colorMovingCell;
+        setTimeout(function() {
+            if (a.style.backgroundColor != colorEmptyCell) {
+                a.style.backgroundColor = 'white';
+            }
+        }, 500);
+        if (isWin()) {
+            alert('You\'re win!');
+        }
+    }
+    
+    var numbers = [],
+        dimension = +document.getElementById('dimension').value,
+        tbl = document.getElementsByTagName('tbody')[0],
+        numbersConst = numbers.slice(0),
+        numbersLength = numbers.length,
+        colorEmptyCell = 'rgb(204, 204, 204)',
+        colorMovingCell = 'rgb(235, 235, 235)';
+    
+    createFields();
+
+    var tds = document.getElementsByTagName('td'),
+        logicFc = function() {
+            var rowIndex = this.parentElement.rowIndex,
+                cellIndex = this.cellIndex;
+            // if not first column
+            if (cellIndex && !this.previousElementSibling.innerHTML) {
+                swap(this.previousElementSibling, this);
+            // if not last column
+            } else if (cellIndex != dimension - 1 && !this.nextElementSibling.innerHTML) {
+                swap(this.nextElementSibling, this);
+            // if not first row
+            } else if (rowIndex && !tbl.children[rowIndex - 1].children[cellIndex].innerHTML) {
+                swap(tbl.children[rowIndex - 1].children[cellIndex], this);
+            // if not last row
+            } else if (rowIndex != dimension - 1 && !tbl.children[rowIndex + 1].children[cellIndex].innerHTML) {
+                swap(tbl.children[rowIndex + 1].children[cellIndex], this);
+            }
+        }
+    
+    // fill fields with numbers
+    var fillFields = function() {
+        numbers = numbersConst.slice(0);
+        for (var i = 0; i < numbersLength; ++i) {
+            var value = numbers[Math.floor(Math.random(numbers.length) * (numbersLength - i))];
+            if (numbersLength == value) {
+                tds[i].style.backgroundColor = colorEmptyCell;
+                tds[i].innerHTML = '';
+            } else {
+                tds[i].innerHTML = value;
+            }
+            numbers.splice(numbers.indexOf(value), 1);
+            tds[i].addEventListener('click', logicFc, false);
+            tds[i].addEventListener('mouseover', function() {
+                if (this.innerHTML) {
+                    this.style.backgroundColor = colorMovingCell;
+                }
+            }, false);
+            tds[i].addEventListener('mouseout', function() {
+                if (this.innerHTML) {
+                    this.style.backgroundColor = 'white';
+                }
+            }, false);
+        }
+    },
+        buildFields = function() {
+            removeFields();
+            createFields();
+            fillFields();
+        }
+        
+    buildFields();
+    
+    document.getElementById('newgame').addEventListener('click', buildFields, false);
+    
+    // keyboard control
+    document.onkeydown = function(e) {
+        function getEmptyCell() {
+            for (var i = 0; i < tds.length; ++i) {
+                if (!tds[i].innerHTML) {
+                    return tds[i];
+                }
+            }
+        }
+        
+        var td = getEmptyCell(),
+            cellIndex = td.cellIndex,
+            rowIndex = td.parentElement.rowIndex;
+            
+        switch (e.keyCode) {
+            // left
+            case 37:
+                if (cellIndex != dimension - 1) {
+                    swap(td, td.nextElementSibling);
+                }
+                break;
+            // up
+            case 38:
+                if (rowIndex != dimension - 1) {
+                    swap(td, tbl.children[rowIndex + 1].children[cellIndex]);
+                }
+                break;
+            // right
+            case 39:
+                if (cellIndex) {
+                    swap(td, td.previousElementSibling);
+                }
+                break;
+            // down
+            case 40:
+                if (rowIndex) {
+                    swap(td, tbl.children[rowIndex - 1].children[cellIndex]);
+                }
+                break;
+        }
+    }    
+})()
