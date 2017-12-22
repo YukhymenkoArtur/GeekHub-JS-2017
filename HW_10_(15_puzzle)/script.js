@@ -1,5 +1,5 @@
 (function(){
-    // detecting the winning
+
     function isWin(){
         if (!tds[numbersLength - 1].innerHTML) {
             for (var i = 1; i < numbersLength; ++i) {
@@ -9,7 +9,7 @@
         return true;
     }
     
-    // create rows & cells
+
     function createFields() {
         updateValues();
         for (var i = 0; i < dimension; ++i) {
@@ -20,7 +20,7 @@
         }
     }
     
-    // remove all rows from table
+
     function removeFields() {
         while (tbl.firstChild) {
             tbl.removeChild(tbl.firstChild);
@@ -37,7 +37,7 @@
         numbersLength = numbers.length;
     }
     
-    // exchange of empty cell with clicked cell
+
     function swap(a, b) {
         var t = a.innerHTML;
         a.innerHTML = b.innerHTML;
@@ -68,22 +68,22 @@
         logicFc = function() {
             var rowIndex = this.parentElement.rowIndex,
                 cellIndex = this.cellIndex;
-            // if not first column
+
             if (cellIndex && !this.previousElementSibling.innerHTML) {
                 swap(this.previousElementSibling, this);
-            // if not last column
+
             } else if (cellIndex != dimension - 1 && !this.nextElementSibling.innerHTML) {
                 swap(this.nextElementSibling, this);
-            // if not first row
+
             } else if (rowIndex && !tbl.children[rowIndex - 1].children[cellIndex].innerHTML) {
                 swap(tbl.children[rowIndex - 1].children[cellIndex], this);
-            // if not last row
+
             } else if (rowIndex != dimension - 1 && !tbl.children[rowIndex + 1].children[cellIndex].innerHTML) {
                 swap(tbl.children[rowIndex + 1].children[cellIndex], this);
             }
         }
     
-    // fill fields with numbers
+
     var fillFields = function() {
         numbers = numbersConst.slice(0);
         for (var i = 0; i < numbersLength; ++i) {
@@ -118,7 +118,7 @@
     
     document.getElementById('newgame').addEventListener('click', buildFields, false);
     
-    // keyboard control
+
     document.onkeydown = function(e) {
         function getEmptyCell() {
             for (var i = 0; i < tds.length; ++i) {
@@ -133,25 +133,25 @@
             rowIndex = td.parentElement.rowIndex;
             
         switch (e.keyCode) {
-            // left
+
             case 37:
                 if (cellIndex != dimension - 1) {
                     swap(td, td.nextElementSibling);
                 }
                 break;
-            // up
+
             case 38:
                 if (rowIndex != dimension - 1) {
                     swap(td, tbl.children[rowIndex + 1].children[cellIndex]);
                 }
                 break;
-            // right
+
             case 39:
                 if (cellIndex) {
                     swap(td, td.previousElementSibling);
                 }
                 break;
-            // down
+
             case 40:
                 if (rowIndex) {
                     swap(td, tbl.children[rowIndex - 1].children[cellIndex]);
