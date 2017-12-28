@@ -21,10 +21,12 @@ function taskController(rootElement) {
 
     function onDelete(task) {
         tasks.delete(task);
+        console.log('tasks', tasks);
     }
 
     function onSubmit(text) {
         tasks.add(text);
+        console.log('tasks', tasks);
     }
 
 

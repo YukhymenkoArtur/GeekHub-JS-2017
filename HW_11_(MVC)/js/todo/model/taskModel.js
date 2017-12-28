@@ -1,17 +1,32 @@
 function TaskModel(tasks) {
+
+    let allTasks = JSON.parse(localStorage.getItem('allTasks'));
+
     this.listeners = [];
 
-    tasks = tasks || [];
+    tasks = allTasks || tasks;
 
     tasks.forEach(task => {
         this.push(task);
     });
 }
 
+function addToLocalSt() {
+    let all = [];
+    for (let i = 0; i < tasks.length; i++) {
+        all.push(tasks[i]);
+    }
+    localStorage.setItem('allTasks', JSON.stringify(all));
+}
+
+
+
+
 TaskModel.prototype = Object.create(Array.prototype);
 
 TaskModel.prototype.done = function (task, status) {
     task.done = status;
+    addToLocalSt(tasks);
     this.trigger('done', [task]);
 };
 
@@ -22,6 +37,7 @@ TaskModel.prototype.add = function (text) {
     };
 
     this.push(task);
+    addToLocalSt(tasks);
     this.trigger('add', [task]);
 };
 
@@ -31,7 +47,8 @@ TaskModel.prototype.delete = function (task) {
     if (index >= 0) {
         this.splice(index, 1);
     }
-
+    localStorage.setItem('arrTasks', JSON.stringify(tasks));
+    addToLocalSt();
     this.trigger('delete', [task]);
 };
 
