@@ -11,7 +11,7 @@ function TaskModel(tasks) {
     });
 }
 
-function addToLocalSt() {
+function addToLocalStorage() {
     let all = [];
     for (let i = 0; i < tasks.length; i++) {
         all.push(tasks[i]);
@@ -20,13 +20,11 @@ function addToLocalSt() {
 }
 
 
-
-
 TaskModel.prototype = Object.create(Array.prototype);
 
 TaskModel.prototype.done = function (task, status) {
     task.done = status;
-    addToLocalSt(tasks);
+    addToLocalStorage(tasks);
     this.trigger('done', [task]);
 };
 
@@ -34,12 +32,21 @@ TaskModel.prototype.add = function (text) {
     let task = {
         text,
         done: false
+        //date: new Date().toLocaleString("en-US")
     };
 
     this.push(task);
-    addToLocalSt(tasks);
+    addToLocalStorage(tasks);
     this.trigger('add', [task]);
 };
+
+// let currentdate = new Date(); 
+// let datetime = "Last Sync: " + currentdate.getDate() + "/"
+//                 + (currentdate.getMonth()+1)  + "/" 
+//                 + currentdate.getFullYear() + " @ "  
+//                 + currentdate.getHours() + ":"  
+//                 + currentdate.getMinutes() + ":" 
+//                 + currentdate.getSeconds();
 
 
 TaskModel.prototype.delete = function (task) {
@@ -48,7 +55,7 @@ TaskModel.prototype.delete = function (task) {
         this.splice(index, 1);
     }
     localStorage.setItem('arrTasks', JSON.stringify(tasks));
-    addToLocalSt();
+    addToLocalStorage();
     this.trigger('delete', [task]);
 };
 

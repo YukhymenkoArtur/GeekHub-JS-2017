@@ -2,15 +2,8 @@
 //     {
 //         text: 'Brew coffee',
 //         done: true
+//         date: new Date(2017, 05, 10).toLocaleString("en-US")
 //     },
-//     {
-//         text: 'Write some code',
-//         done: false
-//     },
-//     {
-//         text: 'Sleep',
-//         done: false
-//     }
 // ]);
 
 
